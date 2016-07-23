@@ -17,7 +17,7 @@ var TweetBox = React.createClass({
       data: tweet
     }).done(function(data){
       console.log(data);
-      this.setState({ tweets: this.state.tweets.concat([data]) });
+      this.setState({ tweets: data });
     }.bind(this)).fail(function(data){
       console.log(data);
     }.bind(this));

@@ -5,6 +5,8 @@ class Api::TweetsController < ApplicationController
 
   def create
     @tweet = Tweet.create(tweet_params)
+    @tweets = Tweet.newer
+    render action: :index
   end
 
   private
