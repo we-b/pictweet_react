@@ -1,1 +1,1 @@
-json.array! @tweets, :text, :image
+json.array! @tweets, :id, :text, :image

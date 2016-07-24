@@ -9,6 +9,13 @@ class Api::TweetsController < ApplicationController
     render action: :index
   end
 
+  def destroy
+    tweet = Tweet.find(params[:id])
+    tweet.destroy
+    @tweets = Tweet.all
+    render action: :index
+  end
+
   private
 
     def tweet_params

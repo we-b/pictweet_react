@@ -16,6 +16,18 @@ var TweetBox = React.createClass({
       dataType: 'json',
       data: tweet
     }).done(function(data){
+      this.setState({ tweets: data });
+    }.bind(this)).fail(function(data){
+      console.log(data);
+    }.bind(this));
+  },
+  handleTweetDelete: function(id){
+    $.ajax({
+      url: this.props.url + "/" + id,
+      type: 'DELETE',
+      dataType: 'json',
+      data: id
+    }).done(function(data){
       console.log(data);
       this.setState({ tweets: data });
     }.bind(this)).fail(function(data){
@@ -32,7 +44,7 @@ var TweetBox = React.createClass({
     return(
       <div className="contents row">
         <TweetForm onTweetSubmit={this.handleTweetSubmit}></TweetForm>
-        <TweetList tweets={this.state.tweets}></TweetList>
+        <TweetList tweets={this.state.tweets} handleDelete={this.handleTweetDelete}></TweetList>
       </div>
     );
   }
@@ -66,12 +78,15 @@ var TweetForm = React.createClass({
 });
 
 var TweetList = React.createClass({
+  handleTweetDelete: function(id){
+    this.props.handleDelete(id);
+  },
   render: function(){
-    var tweetNodes = this.props.tweets.map(function(tweet){
+    var tweetNodes = this.props.tweets.map(function(tweet, index){
       return(
-        <Tweet image={tweet.image} text={tweet.text}></Tweet>
+        <Tweet image={tweet.image} text={tweet.text} onTweetDelete={this.handleTweetDelete} id={tweet.id} key={index}></Tweet>
       );
-    });
+    }.bind(this));
     return(
       <div className="tweet-list">
         {tweetNodes}
@@ -81,6 +96,11 @@ var TweetList = React.createClass({
 });
 
 var Tweet = React.createClass({
+  handleDelete: function(e){
+    e.preventDefault();
+    var id = this.props.id;
+    this.props.onTweetDelete(id);
+  },
   render: function(){
     var imgStyle = {
       backgroundImage: 'url(' + this.props.image + ')'
@@ -93,7 +113,7 @@ var Tweet = React.createClass({
           </span>
           <ul className="more_list">
             <li>
-              <a>詳細</a>
+              <a onClick={this.handleDelete}>削除</a>
             </li>
           </ul>
         </div>
