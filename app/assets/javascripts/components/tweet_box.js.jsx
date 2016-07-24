@@ -96,6 +96,12 @@ var TweetList = React.createClass({
 });
 
 var Tweet = React.createClass({
+  openModal: function(e){
+    e.preventDefault();
+    var id = this.props.id
+    var modal = $(ReactDOM.findDOMNode(this.refs.modal)).remodal();
+    modal.open();
+  },
   handleDelete: function(e){
     e.preventDefault();
     var id = this.props.id;
@@ -115,15 +121,63 @@ var Tweet = React.createClass({
             <li>
               <a onClick={this.handleDelete}>削除</a>
             </li>
+            <li>
+              <a onClick={this.openModal}>詳細</a>
+            </li>
           </ul>
         </div>
         <p>
           {this.props.text}
         </p>
         <span className="name">
-
         </span>
+        <TweetModal id={this.props.id} image={this.props.image} text={this.props.text} ref="modal"></TweetModal>
       </div>
     );
   }
 });
+
+TweetModal = React.createClass({
+  render: function(){
+    return(
+      <div className="modal contents row" data-remodal-id={this.props.id}>
+        <TweetDetail image={this.props.image} text={this.props.text}></TweetDetail>
+        <CommentBox></CommentBox>
+      </div>
+    );
+  }
+});
+
+TweetDetail = React.createClass({
+  render: function(){
+    var imgStyle = {
+      backgroundImage: 'url(' + this.props.image + ')'
+    };
+    return(
+      <div className="content_post" style={imgStyle} >
+        <p>{this.props.text}</p>
+        <span className="name"></span>
+      </div>
+    );
+  }
+});
+
+CommentBox = React.createClass({
+  render: function(){
+    return(
+      <div></div>
+    );
+  }
+});
+
+// CommentForm = React.createClass({
+//
+// });
+//
+// CommentList = React.createClass({
+//
+// });
+//
+// Comment = React.createClass({
+//
+// });
