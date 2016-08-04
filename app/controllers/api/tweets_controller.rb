@@ -5,21 +5,22 @@ class Api::TweetsController < ApplicationController
 
   def create
     @tweet = Tweet.create(tweet_params)
-    @tweets = Tweet.newer
-    render action: :index
+  end
+
+  def update
+    @tweet = Tweet.find(params[:id])
+    @tweet.update(tweet_params)
   end
 
   def destroy
-    tweet = Tweet.find(params[:id])
-    tweet.destroy
-    @tweets = Tweet.all
-    render action: :index
+    @tweet = Tweet.find(params[:id])
+    @tweet.destroy
   end
 
   private
 
     def tweet_params
-      params.permit("image", "text")
+      params.permit(:image, :text)
     end
 
 end
