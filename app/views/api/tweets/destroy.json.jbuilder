@@ -1,3 +1,1 @@
-json.tweet do
-  json.id @tweet.id
-end
+json.id @tweet.id
