@@ -1,6 +1,6 @@
 class Api::TweetsController < ApplicationController
   def index
-    @tweets = Tweet.newer
+    @tweets = Tweet.order(created_at: :desc)
   end
 
   def create
